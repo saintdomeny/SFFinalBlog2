@@ -58,7 +58,7 @@ namespace SFFinalBlog2.Controllers
 
             if (string.IsNullOrEmpty(model.Title) || string.IsNullOrEmpty(model.Content))
             {
-                ModelState.AddModelError("", "Не все поля заполненны");
+                ModelState.AddModelError("", "Не все поля заполнены");
 
                 return View(model);
             }

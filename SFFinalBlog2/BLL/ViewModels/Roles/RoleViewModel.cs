@@ -8,7 +8,7 @@ using System.Xml.Linq;
 
 namespace SFFinalBlog2.BLL.ViewModels.Roles
 {
-    public class RoleViewModel
+    public class CommentViewModel
     {
         public string? Id { get; set; }
 

@@ -5,8 +5,7 @@
 
 <div class="container-page">
 	<h2 class="title-margin">Добавление статьи</h2>
-	<form method="post" asp-controller="Post" asp-action="CreatePost">
-		<div asp-validation-summary="All" class="text-danger"></div>
+	<form method="post" asp-controller="Post" asp-action="CreatePost"> <div asp-validation-summary="All" class="text-danger"></div>
 		<div style="margin-bottom: 5px">
 			<label asp-for="Title"></label><br/>
 			<input class="form-control" asp-for="Title"/>
@@ -41,7 +40,7 @@
 			<input class="btn btn-sm btn-primary" type="submit" value="Создать" onclick=""/>
 		</div>
 		<p>
-			<a method="get" asp-controller="Post" asp-action="GetPosts">Все статьи </a>
+			<a method="get" asp-controller="Post" asp-action="GetPosts">Все статьи</a>
 		</p>
 	</form>
 </div>

@@ -18,6 +18,7 @@
 		</div>
 		<div>
 			<input class="btn btn-sm btn-primary" type="submit" value="Сохранить"/>
+			<a asp-controller="Comment" asp-action="RemoveComment" asp-route-id="@Model.Id" class="btn btn-sm btn-danger">Удалить комментарий</a>
 		</div>
 		<p>
 			<a method="get" asp-controller="Post" asp-action="GetPosts">Все статьи</a>
