@@ -1,11 +1,10 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-using SFFinalBlog2.BLL.Services;
 using SFFinalBlog2.BLL.Services.IServices;
 using SFFinalBlog2.BLL.ViewModels.Comments;
 using SFFinalBlog2.DAL.Models;
+using NLog;
 
 namespace SFFinalBlog2.Controllers
 {
@@ -13,8 +12,9 @@ namespace SFFinalBlog2.Controllers
     {
         private readonly ICommentService _commentService;
         private readonly UserManager<User> _userManager;
+		private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-        public CommentController(ICommentService commentService, UserManager<User> userManager)
+		public CommentController(ICommentService commentService, UserManager<User> userManager)
         {
             _commentService = commentService;
             _userManager = userManager;
@@ -40,12 +40,11 @@ namespace SFFinalBlog2.Controllers
         public async Task<IActionResult> CreateComment(CommentCreateViewModel model, Guid postId)
         {
             model.PostId = postId;
-
             var user = await _userManager.FindByNameAsync(User?.Identity?.Name);
-
             var post = _commentService.CreateComment(model, new Guid(user.Id));
+			Logger.Info($"Пользователь {model.Author} добавил комментарий к статье {postId}");
 
-            return RedirectToAction("GetPosts", "Post");
+			return RedirectToAction("GetPosts", "Post");
         }
 
         /// <summary>
@@ -71,8 +70,9 @@ namespace SFFinalBlog2.Controllers
             if (ModelState.IsValid)
             {
                 await _commentService.EditComment(model, model.Id);
+				Logger.Info($"Пользователь {model.Author} изменил комментарий {model.Id}");
 
-                return RedirectToAction("GetPosts", "Post");
+				return RedirectToAction("GetPosts", "Post");
             }
             else
             {
@@ -91,7 +91,6 @@ namespace SFFinalBlog2.Controllers
         public async Task<IActionResult> RemoveComment(Guid id, bool confirm = true)
         {
             if (confirm)
-
                 await RemoveComment(id);
 
             return RedirectToAction("GetPosts", "Post");
@@ -105,8 +104,9 @@ namespace SFFinalBlog2.Controllers
         public async Task<IActionResult> RemoveComment(Guid id)
         {
             await _commentService.RemoveComment(id);
+			Logger.Info($"Комментарий с id {id} удален");
 
-            return RedirectToAction("GetPosts", "Post");
+			return RedirectToAction("GetPosts", "Post");
         }
         /// <summary>
         /// [Get] Метод, получения всех тегов
@@ -114,14 +114,14 @@ namespace SFFinalBlog2.Controllers
         [Route("Comment/Get")]
         [Authorize(Roles = "Администратор, Модератор")]
         [HttpGet]
-        public async Task<IActionResult> GetComments()
+        public async Task<IActionResult> GetComments()//
         {
             var comments = await _commentService.GetComments();
 
             return View(comments);
         }
 
-        public async Task<IActionResult> DetailsComment(Guid id)
+        public async Task<IActionResult> DetailsComment(Guid id)//
         {
             var comments = await _commentService.GetComment(id);
 

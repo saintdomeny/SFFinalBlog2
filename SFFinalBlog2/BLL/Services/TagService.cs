@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using SFFinalBlog2.DAL.Repositories.IRepositories;
 using SFFinalBlog2.DAL.Models;
 using SFFinalBlog2.BLL.Services.IServices;
@@ -16,7 +11,6 @@ namespace SFFinalBlog2.BLL.Services
         private readonly ITagRepository _repo;
         private readonly IMapper _mapper;
 
-
         public TagService(ITagRepository repo, IMapper mapper)
         {
             _repo = repo;
@@ -27,7 +21,6 @@ namespace SFFinalBlog2.BLL.Services
         {
             var tag = _mapper.Map<Tag>(model);
             await _repo.AddTag(tag);
-
             return tag.Id;
         }
 
@@ -38,7 +31,6 @@ namespace SFFinalBlog2.BLL.Services
             {
                 Name = tag.Name
             };
-
             return result;
         }
 

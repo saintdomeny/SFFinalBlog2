@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.Xml.Linq;
 
 namespace SFFinalBlog2.BLL.ViewModels.Comments
 {

@@ -22,6 +22,7 @@
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="6.0.19" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.19" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.19" />
+    <PackageReference Include="NLog" Version="5.2.3" />
   </ItemGroup>
 
 </Project>

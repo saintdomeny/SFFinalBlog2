@@ -1,10 +1,5 @@
 ﻿using SFFinalBlog2.BLL.ViewModels.Posts;
 using SFFinalBlog2.DAL.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SFFinalBlog2.BLL.Services.IServices
 {
@@ -24,6 +19,6 @@ namespace SFFinalBlog2.BLL.Services.IServices
 
         Task<Post> ShowPost(Guid id);
 
-        Task<List<Post>> GetPostsByAuthor(string authorId);
+        Task<List<Post>> GetPostsByAuthor(string authorId);//
     }
 }

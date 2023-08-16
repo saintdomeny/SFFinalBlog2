@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using System;
-
-namespace SFFinalBlog2.DAL.Models
+﻿namespace SFFinalBlog2.DAL.Models
 {
     public class Tag
     {

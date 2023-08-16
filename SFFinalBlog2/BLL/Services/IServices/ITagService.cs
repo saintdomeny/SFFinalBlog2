@@ -1,10 +1,5 @@
 ﻿using SFFinalBlog2.BLL.ViewModels.Tags;
 using SFFinalBlog2.DAL.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SFFinalBlog2.BLL.Services.IServices
 {

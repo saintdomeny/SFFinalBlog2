@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using SFFinalBlog2.DAL.Models;
-using System.Collections.Generic;
 
 namespace SFFinalBlog2.DAL
 {

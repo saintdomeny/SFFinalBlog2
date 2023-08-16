@@ -1,16 +1,17 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using SFFinalBlog2.BLL.Services.IServices;
 using SFFinalBlog2.BLL.ViewModels.Users;
+using NLog;
 
 namespace SFFinalBlog2.Controllers
 {
     public class UserController : Controller
     {
         private readonly IUserService _userService;
+		private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-        public UserController(IUserService userService)
+		public UserController(IUserService userService)
         {
             _userService = userService;
         }
@@ -39,7 +40,8 @@ namespace SFFinalBlog2.Controllers
 
                 if (result.Succeeded)
                 {
-                    return RedirectToAction("Index", "Home");
+					Logger.Info($"Осуществлен вход пользователя с адресом - {model.Email}");
+					return RedirectToAction("Index", "Home");
                 }
 
                 else
@@ -73,7 +75,8 @@ namespace SFFinalBlog2.Controllers
 
                 if (result.Succeeded)
                 {
-                    return RedirectToAction("GetAccounts", "User");
+					Logger.Info($"Создан аккаунт, пользователем с правами администратора, с использованием адреса - {model.Email}");
+					return RedirectToAction("GetAccounts", "User");
                 }
                 else
                 {
@@ -109,7 +112,8 @@ namespace SFFinalBlog2.Controllers
 
                 if (result.Succeeded)
                 {
-                    return RedirectToAction("Index", "Home");
+					Logger.Info($"Создан аккаунт с использованием адреса - {model.Email}");
+					return RedirectToAction("Index", "Home");
                 }
                 else
                 {
@@ -146,8 +150,9 @@ namespace SFFinalBlog2.Controllers
             if (ModelState.IsValid)
             {
                 await _userService.EditAccount(model);
+				Logger.Info($"Аккаунт {model.UserName} был изменен");
 
-                return RedirectToAction("GetAccounts", "User");
+				return RedirectToAction("GetAccounts", "User");
             }
 
             else
@@ -180,10 +185,10 @@ namespace SFFinalBlog2.Controllers
         public async Task<IActionResult> RemoveAccount(Guid id)
         {
             var account = await _userService.GetAccount(id);
-
             await _userService.RemoveAccount(id);
+			Logger.Info($"Аккаунт с id - {id} удален");
 
-            return RedirectToAction("GetAccounts", "User");
+			return RedirectToAction("GetAccounts", "User");
         }
 
         /// <summary>
@@ -195,8 +200,9 @@ namespace SFFinalBlog2.Controllers
         public async Task<IActionResult> LogoutAccount()
         {
             await _userService.LogoutAccount();
+			Logger.Info($"Осуществлен выход из аккаунта");
 
-            return RedirectToAction("Index", "Home");
+			return RedirectToAction("Index", "Home");
         }
 
         /// <summary>

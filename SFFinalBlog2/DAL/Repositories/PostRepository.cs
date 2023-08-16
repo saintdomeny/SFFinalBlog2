@@ -44,7 +44,7 @@ namespace SFFinalBlog2.DAL.Repositories
                 await SaveChangesAsync();
             }
         }
-        public async Task<List<Post>> GetPostsByAuthor(string authorId)
+        public async Task<List<Post>> GetPostsByAuthor(string authorId)//
         {
             return await _context.Posts
                 .Include(p => p.Tags)

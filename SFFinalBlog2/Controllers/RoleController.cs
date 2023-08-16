@@ -1,16 +1,17 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using SFFinalBlog2.BLL.Services.IServices;
 using SFFinalBlog2.BLL.ViewModels.Roles;
+using NLog;
 
 namespace SFFinalBlog2.Controllers
 {
     public class RoleController : Controller
     {
         private readonly IRoleService _roleService;
+		private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-        public RoleController(IRoleService roleService)
+		public RoleController(IRoleService roleService)
         {
             _roleService = roleService;
         }
@@ -37,14 +38,16 @@ namespace SFFinalBlog2.Controllers
             if (ModelState.IsValid)
             {
                 var roleId = await _roleService.CreateRole(model);
+				Logger.Info($"Созданна роль - {model.Name}");
 
-                return RedirectToAction("GetRoles", "Role");
+				return RedirectToAction("GetRoles", "Role");
             }
             else
             {
                 ModelState.AddModelError("", "Некорректные данные");
+				Logger.Error($"Роль {model.Name} не создана, ошибка при создании - Некорректные данные");
 
-                return View(model);
+				return View(model);
             }
         }
 
@@ -57,7 +60,6 @@ namespace SFFinalBlog2.Controllers
         public async Task<IActionResult> EditRole(Guid id)
         {
             var role = _roleService.GetRole(id);
-
             var view = new RoleEditViewModel { Id = id, Description = role.Result?.Description, Name = role.Result?.Name };
 
             return View(view);
@@ -74,14 +76,16 @@ namespace SFFinalBlog2.Controllers
             if (ModelState.IsValid)
             {
                 await _roleService.EditRole(model);
+				Logger.Info($"Измененна роль - {model.Name}");
 
-                return RedirectToAction("GetRoles", "Role");
+				return RedirectToAction("GetRoles", "Role");
             }
             else
             {
                 ModelState.AddModelError("", "Некорректные данные");
+				Logger.Error($"Роль {model.Name} не изменена, ошибка при изменении - Некорректные данные");
 
-                return View(model);
+				return View(model);
             }
         }
 
@@ -94,7 +98,6 @@ namespace SFFinalBlog2.Controllers
         public async Task<IActionResult> RemoveRole(Guid id, bool isConfirm = true)
         {
             if (isConfirm)
-
                 await RemoveRole(id);
 
             return RedirectToAction("GetRoles", "Role");
@@ -109,8 +112,9 @@ namespace SFFinalBlog2.Controllers
         public async Task<IActionResult> RemoveRole(Guid id)
         {
             await _roleService.RemoveRole(id);
+			Logger.Info($"Удаленна роль - {id}");
 
-            return RedirectToAction("GetRoles", "Role");
+			return RedirectToAction("GetRoles", "Role");
         }
 
         /// <summary>

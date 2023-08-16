@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml.Linq;
+﻿using System.ComponentModel.DataAnnotations;
 using SFFinalBlog2.BLL.ViewModels.Tags;
 
 namespace SFFinalBlog2.BLL.ViewModels.Posts
@@ -20,9 +14,9 @@ namespace SFFinalBlog2.BLL.ViewModels.Posts
         [Display(Name = "Заголовок", Prompt = "Заголовок")]
         public string? Title { get; set; }
 
-        [Required(ErrorMessage = "Поле Описание обязательно для заполнения")]
+        [Required(ErrorMessage = "Поле Контент обязательно для заполнения")]
         [DataType(DataType.Text)]
-        [Display(Name = "Описание", Prompt = "Описание")]
+        [Display(Name = "Контент", Prompt = "Контент")]
         public string? Content { get; set; }
     }
 }

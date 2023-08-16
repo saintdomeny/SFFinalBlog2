@@ -48,13 +48,17 @@ namespace SFFinalBlog2
                 .AddTransient<ITagService, TagService>()
                 .AddControllersWithViews();
 
-            var app = builder.Build();
+			// подключение logger
+			builder.Logging.ClearProviders()
+				.SetMinimumLevel(LogLevel.Trace)
+				.AddConsole();
+
+			var app = builder.Build();
 
             // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())
             {
-                app.UseExceptionHandler("/Home/Error");
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+                app.UseExceptionHandler("/Home/Error"); // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
 
@@ -63,8 +67,9 @@ namespace SFFinalBlog2
             app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();
+			app.UseStatusCodePagesWithReExecute("/Home/Error", "?statusCode={0}");
 
-            app.MapControllerRoute(
+			app.MapControllerRoute(
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}");
 

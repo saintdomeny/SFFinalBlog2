@@ -2,13 +2,15 @@
 using Microsoft.AspNetCore.Mvc;
 using SFFinalBlog2.BLL.Services.IServices;
 using SFFinalBlog2.BLL.ViewModels.Tags;
+using NLog;
 
 namespace SFFinalBlog2.Controllers
 {
     public class TagController : Controller
     {
         private readonly ITagService _tagService;
-
+		private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+		
         public TagController(ITagService tagService)
         {
             _tagService = tagService;
@@ -36,12 +38,15 @@ namespace SFFinalBlog2.Controllers
             if (ModelState.IsValid)
             {
                 var tagId = _tagService.CreateTag(model);
+				Logger.Info($"Создан тег - {model.Name}");
 
-                return RedirectToAction("GetTags", "Tag");
+				return RedirectToAction("GetTags", "Tag");
             }
             else
             {
-                return View(model);
+				Logger.Error($"Ошибка при создании тега - {model.Name}");
+
+				return View(model);
             }
         }
 
@@ -69,12 +74,15 @@ namespace SFFinalBlog2.Controllers
             if (ModelState.IsValid)
             {
                 await _tagService.EditTag(model, id);
+				Logger.Info($"Изменен тег - {model.Name}");
 
-                return RedirectToAction("GetTags", "Tag");
+				return RedirectToAction("GetTags", "Tag");
             }
             else
             {
-                return View(model);
+				Logger.Error($"Ошибка при изменении тега - {model.Name}");
+
+				return View(model);
             }
         }
 
@@ -88,6 +96,7 @@ namespace SFFinalBlog2.Controllers
         {
             if (isConfirm)
                 await RemoveTag(id);
+
             return RedirectToAction("GetTags", "Tag");
         }
 
@@ -101,8 +110,9 @@ namespace SFFinalBlog2.Controllers
         {
             var tag = await _tagService.GetTag(id);
             await _tagService.RemoveTag(id);
+			Logger.Info($"Удаленн тег - {id}");
 
-            return RedirectToAction("GetTags", "Tag");
+			return RedirectToAction("GetTags", "Tag");
         }
 
         /// <summary>
@@ -118,7 +128,13 @@ namespace SFFinalBlog2.Controllers
             return View(tags);
         }
 
-        public async Task<IActionResult> DetailsTag(Guid id)
+		/// <summary>
+		/// [Get] Метод, просмотра данных о теге
+		/// </summary>
+		[Route("Tag/Details")]
+		[Authorize(Roles = "Администратор, Модератор")]
+		[HttpGet]
+		public async Task<IActionResult> DetailsTag(Guid id)
         {
             var tags = await _tagService.GetTag(id);
 

@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
+using NLog;
 using SFFinalBlog2.BLL.Services.IServices;
 using SFFinalBlog2.BLL.ViewModels.Posts;
 using SFFinalBlog2.DAL.Models;
@@ -12,8 +12,9 @@ namespace SFFinalBlog2.Controllers
     {
         private readonly IPostService _postService;
         private readonly UserManager<User> _userManager;
+		private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-        public PostController(IPostService postService, UserManager<User> userManager)
+		public PostController(IPostService postService, UserManager<User> userManager)
         {
             _postService = postService;
             _userManager = userManager;
@@ -53,19 +54,18 @@ namespace SFFinalBlog2.Controllers
         public async Task<IActionResult> CreatePost(PostCreateViewModel model)
         {
             var user = await _userManager.FindByNameAsync(User?.Identity?.Name);
-
             model.AuthorId = user.Id;
-
             if (string.IsNullOrEmpty(model.Title) || string.IsNullOrEmpty(model.Content))
             {
                 ModelState.AddModelError("", "Не все поля заполнены");
+				Logger.Error($"Пост не создан, ошибка при создании - Не все поля заполнены");
 
-                return View(model);
+				return View(model);
             }
-
             await _postService.CreatePost(model);
+			Logger.Info($"Создан пост - {model.Title}");
 
-            return RedirectToAction("GetPosts", "Post");
+			return RedirectToAction("GetPosts", "Post");
         }
 
         /// <summary>
@@ -91,13 +91,14 @@ namespace SFFinalBlog2.Controllers
             if (string.IsNullOrEmpty(model.Title) || string.IsNullOrEmpty(model.Content))
             {
                 ModelState.AddModelError("", "Не все поля заполненны");
-
-                return View(model);
+				Logger.Error($"Пост не отредактирован, ошибка при редактировании - Не все поля заполнены");
+                
+				return View(model);
             }
-
             await _postService.EditPost(model, Id);
+			Logger.Info($"Пост {model.Title} отредактирован");
 
-            return RedirectToAction("GetPosts", "Post");
+			return RedirectToAction("GetPosts", "Post");
         }
 
         /// <summary>
@@ -108,7 +109,6 @@ namespace SFFinalBlog2.Controllers
         public async Task<IActionResult> RemovePost(Guid id, bool confirm = true)
         {
             if (confirm)
-
                 await RemovePost(id);
 
             return RedirectToAction("GetPosts", "Post");
@@ -123,8 +123,9 @@ namespace SFFinalBlog2.Controllers
         public async Task<IActionResult> RemovePost(Guid id)
         {
             await _postService.RemovePost(id);
+			Logger.Info($"Пост с id {id} удален");
 
-            return RedirectToAction("GetPosts", "Post");
+			return RedirectToAction("GetPosts", "Post");
         }
 
         /// <summary>
@@ -140,7 +141,7 @@ namespace SFFinalBlog2.Controllers
         }
         [HttpGet]
         [Route("Post/GetByAuthor/{authorId}")]
-        public async Task<IActionResult> GetPostsByAuthor(string authorId)
+        public async Task<IActionResult> GetPostsByAuthor(string authorId)//
         {
             var posts = await _postService.GetPostsByAuthor(authorId);
             return View(posts);

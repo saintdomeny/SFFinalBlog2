@@ -1,8 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Xml.Linq;
-using System;
-
-namespace SFFinalBlog2.DAL.Models
+﻿namespace SFFinalBlog2.DAL.Models
 {
     public class Post
     {
@@ -10,7 +6,7 @@ namespace SFFinalBlog2.DAL.Models
         public string? Title { get; set; }
         public string? Content { get; set; }
 
-        public DateTime CreatedData { get; set; } = DateTime.Now;
+        public DateTime CreatedData { get; set; } = DateTime.UtcNow;
         public string? AuthorId { get; set; }
         public User? User { get; set; }
         public List<Tag> Tags { get; set; } = new();
