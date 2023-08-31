@@ -8,7 +8,8 @@ using NLog;
 
 namespace SFFinalBlog2.Controllers
 {
-    public class CommentController : Controller
+	[ApiExplorerSettings(IgnoreApi = true)]
+	public class CommentController : Controller
     {
         private readonly ICommentService _commentService;
         private readonly UserManager<User> _userManager;

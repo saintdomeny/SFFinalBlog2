@@ -6,7 +6,8 @@ using NLog;
 
 namespace SFFinalBlog2.Controllers
 {
-    public class HomeController : Controller
+	[ApiExplorerSettings(IgnoreApi = true)]
+	public class HomeController : Controller
     {
         private readonly IHomeService _homeService;
 		private static readonly Logger Logger = LogManager.GetCurrentClassLogger();

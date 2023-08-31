@@ -6,7 +6,8 @@ using NLog;
 
 namespace SFFinalBlog2.Controllers
 {
-    public class TagController : Controller
+	[ApiExplorerSettings(IgnoreApi = true)]
+	public class TagController : Controller
     {
         private readonly ITagService _tagService;
 		private static readonly Logger Logger = LogManager.GetCurrentClassLogger();

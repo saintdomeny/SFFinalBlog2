@@ -8,7 +8,8 @@ using SFFinalBlog2.DAL.Models;
 
 namespace SFFinalBlog2.Controllers
 {
-    public class PostController : Controller
+	[ApiExplorerSettings(IgnoreApi = true)]
+	public class PostController : Controller
     {
         private readonly IPostService _postService;
         private readonly UserManager<User> _userManager;
